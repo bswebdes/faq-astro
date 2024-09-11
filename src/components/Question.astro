@@ -1,0 +1,72 @@
+---
+const { question, answer } = Astro.props;
+import '../assets/styles/styles.css';
+import iconClose from '../assets/images/icon-minus.svg';
+import iconOpen from '../assets/images/icon-plus.svg';
+---
+
+<div class='faq_element'>
+  <div class='faq_question'>
+    <h2>{question}</h2>
+    <img src={iconOpen.src} alt='' />
+  </div>
+  <p class='faq_answer'>{answer}</p>
+</div>
+
+<style>
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--darl-purple);
+  }
+  p {
+    font-size: 1rem;
+    color: var(--grayish-purple);
+  }
+  .faq_element {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq_question {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    cursor: pointer;
+  }
+
+  .faq_answer {
+    height: 0;
+    overflow: hidden;
+  }
+
+  .faq_answer.open {
+    height: auto;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+  import iconClose from '../assets/images/icon-minus.svg';
+  import iconOpen from '../assets/images/icon-plus.svg';
+
+  const questions = document.querySelectorAll('.faq_question');
+  questions.forEach((question) => {
+    question.addEventListener('click', () => {
+      const answer = question.nextElementSibling;
+      const icon = question.querySelector('img');
+      questions.forEach((q) => {
+        const a = q.nextElementSibling;
+        const i = q.querySelector('img');
+        if (q !== question) {
+          a.classList.remove('open');
+          i.src = iconOpen.src;
+        }
+      });
+      answer.classList.toggle('open');
+      icon.src = answer.classList.contains('open')
+        ? iconClose.src
+        : iconOpen.src;
+    });
+  });
+</script>
